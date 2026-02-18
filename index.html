@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOB4 BARBER | Servicio a Domicilio</title>
+    <style>
+        :root {
+            --dorado: #d4af37;
+            --oscuro: #121212;
+            --gris: #2a2a2a;
+            --blanco: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: var(--oscuro);
+            color: var(--blanco);
+            line-height: 1.6;
+        }
+
+        .logo {
+            font-weight: bold;
+            letter-spacing: 6px;
+            font-size: 2rem;
+            color: var(--dorado);
+            text-transform: uppercase;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0,0,0,0.95);
+            padding: 25px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid var(--dorado);
+            z-index: 100;
+        }
+
+        /* Sección Principal */
+        .hero {
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+                        url('https://images.unsplash.com/photo-1512690196236-d20bd3dd3956?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero h1 { font-size: 3.5rem; color: var(--dorado); margin: 0; text-transform: uppercase; letter-spacing: 5px; }
+        .hero p { font-size: 1.3rem; opacity: 0.9; margin-top: 15px; }
+
+        /* Pasos del Servicio */
+        .pasos-domicilio {
+            background-color: var(--dorado);
+            color: black;
+            padding: 30px 20px;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Galería de Fotos */
+        .galeria {
+            padding: 60px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .galeria h2 {
+            color: var(--dorado);
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .grid-fotos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .foto-card {
+            background: var(--gris);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: transform 0.4s ease;
+            position: relative; /* Necesario para el efecto */
+        }
+
+        .foto-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--dorado);
+            cursor: pointer; /* Manito para indicar clic */
+        }
+
+        .foto-card img {
+            width: 100%;
+            height: 400px; /* Aquí controlamos la altura en la vista normal */
+            object-fit: cover; /* Recorta la imagen para que encaje bien */
+            display: block;
+        }
+
+        /* --- ESTILOS DEL VISOR (MODAL) --- */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            z-index: 2000;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.95); /* Fondo negro casi total */
+        }
+
+        /* Imagen dentro del modal */
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 80vh; /* Altura máxima del 80% de la pantalla */
+            border: 2px solid var(--dorado);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* Botón de cerrar (X) */
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--dorado);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Texto explicativo abajo */
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        /* Botón WhatsApp */
+        .btn-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: white;
+            padding: 20px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 1000;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #128c7e;
+            transform: scale(1.05);
+        }
+
+        /* Pie de página */
+        footer {
+            padding: 60px 20px;
+            text-align: center;
+            background: #000;
+            border-top: 1px solid var(--gris);
+        }
+
+        .footer-info { opacity: 0.8; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">YOB4 BARBER PRO</div>
+</header>
+
+<section class="hero">
+    <h1>EL BARBERO EN TU CASA</h1>
+    <p>Estilo, precisión y la mejor herramienta a tu servicio.</p>
+</section>
+
+<section class="pasos-domicilio">
+    <div>1. AGENDAS POR WHATSAPP</div>
+    <div>2. LLEGAMOS A TU UBICACIÓN</div>
+    <div>3. QUEDAS IMPECABLE</div>
+</section>
+
+<section class="galeria">
+    <h2>NUESTRO TRABAJO</h2>
+    <p style="margin-bottom: 20px; color: #aaa;">(Toca las fotos para ampliarlas)</p>
+    
+    <div class="grid-fotos">
+        <div class="foto-card">
+            <img src="trabajo1.jfif" alt="corte realizado por YOB4 BARBER" onclick="abrirModal(this)">
+        </div>
+       
+        <div class="foto-card">
+            <img src="trabajo2.jfif" alt="corte realizado por YOB4 BARBER" onclick="abrirModal(this)">
+        </div>
+
+        <div class="foto-card">
+            <img src="trabajo3.jfif" alt="corte realizado por YOB4 BARBER" onclick="abrirModal(this)">
+        </div>
+
+        <div class="foto-card">
+            <img src="trabajo4.jfif" alt="corte realizado por YOB4 BARBER" onclick="abrirModal(this)">
+        </div>
+
+        <div class="foto-card">
+            <img src="trabajo5.jfif" alt="corte realizado por YOB4 BARBER" onclick="abrirModal(this)">
+        </div>
+
+        <div class="foto-card">
+            <img src="trabajo6.jfif" alt="corte realizado por YOB4 BARBER" onclick="abrirModal(this)">
+        </div>
+
+        <div class="foto-card">
+            <img src="trabajo7.jfif" alt="corte realizado por YOB4 BARBER" onclick="abrirModal(this)">
+        </div>
+
+    </div>
+</section>
+
+<div id="miModal" class="modal">
+  <span class="close" onclick="cerrarModal()">&times;</span>
+  <img class="modal-content" id="imgGrande">
+  <div id="caption"></div>
+</div>
+
+<footer>
+    <p class="footer-info">📍 Servicio exclusivo a domicilio en toda la ciudad</p>
+    <p style="font-size: 0.8rem; color: #555; letter-spacing: 2px; margin-top: 20px;">
+        © 2026 YOB4 BARBER - CALIDAD Y ESTILO
+    </p>
+</footer>
+
+<a href="https://wa.me/TUNUMEROAQUI" class="btn-whatsapp">
+    📱 AGENDAR CITA
+</a>
+
+<div class="fb-container">
+        <a href="https://www.facebook.com/share/189s4CeoSm/" target="_yellow" class="btn-facebook">
+            <i class="fab fa-facebook"></i> PERFIL DE FACEBOOK
+        </a>
+    </div>
+
+<script>
+    // Función para abrir el modal
+    function abrirModal(elementoImg) {
+        var modal = document.getElementById("miModal");
+        var modalImg = document.getElementById("imgGrande");
+        var captionText = document.getElementById("caption");
+        
+        modal.style.display = "flex"; // Usamos flex para centrar
+        modal.style.flexDirection = "column";
+        modal.style.justifyContent = "center";
+        modal.style.alignItems = "center";
+        
+        modalImg.src = elementoImg.src; // Pone la foto clickeada en grande
+        captionText.innerHTML = elementoImg.alt; // Pone el texto alternativo abajo
+    }
+
+    // Función para cerrar el modal
+    function cerrarModal() {
+        var modal = document.getElementById("miModal");
+        modal.style.display = "none";
+    }
+
+    // Cerrar si se hace clic fuera de la imagen
+    window.onclick = function(event) {
+        var modal = document.getElementById("miModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
